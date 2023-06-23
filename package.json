@@ -1,0 +1,29 @@
+{
+    "name": "employee-tracker",
+    "version": "1.0.0",
+    "description": "## Your Task",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mrbll48/exmployee-tracker.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mrbll48/exmployee-tracker/issues"
+    },
+    "homepage": "https://github.com/mrbll48/exmployee-tracker#readme",
+    "dependencies": {
+        "chalk": "^5.2.0",
+        "console.table": "^0.10.0",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "mysql2": "^3.3.3",
+        "ora": "^6.3.1",
+        "sequelize": "^6.32.1"
+    }
+}
