@@ -1,22 +1,22 @@
 {
-    "name": "employee-tracker",
+    "name": "messaging-app",
     "version": "1.0.0",
     "description": "## Your Task",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mrbll48/exmployee-tracker.git"
+        "url": "git+https://github.com/NekoNoka/Messaging-App"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/mrbll48/exmployee-tracker/issues"
+        "url": "https://github.com/NekoNoka/Messaging-App/issues"
     },
-    "homepage": "https://github.com/mrbll48/exmployee-tracker#readme",
+    "homepage": "https://github.com/NekoNoka/Messaging-App#readme",
     "dependencies": {
         "bcrypt": "^5.1.0",
         "chalk": "^5.2.0",
