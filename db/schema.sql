@@ -1,5 +1,2 @@
--- DROP DATABASE
-DROP DATABASE IF EXISTS messaging_db;
-
--- CREATE DATABASE
-CREATE DATABASE messaging_db;
+DROP DATABASE IF EXISTS messenger_db;
+CREATE DATABASE messenger_db;
