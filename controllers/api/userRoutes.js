@@ -1,12 +1,17 @@
 const router = require("express").Router();
-const User = require("../../models/User");
+const { User } = require("../../models/User");
 
+// create user route
 router.post("/", async (req, res) => {
   try {
-    const userData = await User.create(req.body);
+    const userData = await User.create({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    console.log(userData);
+
     req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
+      req.session.loggedIn = true;
 
       res.status(200).json(userData);
     });
@@ -15,9 +20,14 @@ router.post("/", async (req, res) => {
   }
 });
 
+// login route
 router.post("/login", async (req, res) => {
   try {
-    const userData = await User.findOne({ where: { email: req.body.name } });
+    const userData = await User.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
     if (!userData) {
       res.status(400).json({ message: "Incorrect user-name" });
       return;
@@ -30,18 +40,18 @@ router.post("/login", async (req, res) => {
       return;
     }
     req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
+      req.session.loggedIn = true;
 
-      res.json({ user: userData, messagge: "You successfully logged in" });
+      res.json({ user: userData, message: "You successfully logged in" });
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
+// logout route
 router.post("/logout", (req, res) => {
-  if (req.session.logged_in) {
+  if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(200).end();
     });
