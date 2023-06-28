@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../../models/User");
+const bcrypt = require("bcrypt");
 
 // create user route
 router.post("/", async (req, res) => {
@@ -33,7 +34,10 @@ router.post("/login", async (req, res) => {
       return;
     }
 
-    const validatePassword = await userData.checkPassword(req.body.password);
+    const validatePassword = await bcrypt.compare(
+      req.body.password,
+      userData.password
+    );
 
     if (!validatePassword) {
       res.status(400).json("Incorrect password");
