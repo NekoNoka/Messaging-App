@@ -90,4 +90,4 @@ const eventSys = new EventEmitter();
     console.log(packet);
     ws.send(packet);
   });
-});
+})();
