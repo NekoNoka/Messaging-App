@@ -24,9 +24,10 @@ router.post("/login", async (req, res) => {
   try {
     const userData = await User.findOne({
       where: {
-        name: req.body.name,
+        name: req.body.username,
       },
     });
+
     if (!userData) {
       res.status(400).json({ message: "Incorrect user-name" });
       return;
@@ -38,6 +39,7 @@ router.post("/login", async (req, res) => {
       res.status(400).json("Incorrect password");
       return;
     }
+
     req.session.save(() => {
       req.session.loggedIn = true;
 
