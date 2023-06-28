@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+}
+
+main {
+    display: block;
+}
+  
+h1 {
+    font-size: 30px;
+    margin: 0.67em 0;
+}
+
+:root {
+    /* declare a variable with `--` syntax */
+    --background: #0a0f24;
+    --text: white;
+    --navbar: #8bbcd0;
+    --sidebar: #4b5063;
+}
+
+nav ul {
+    display: flex;
+    background-color: var(--navbar);
+    text-decoration: none;
+}
