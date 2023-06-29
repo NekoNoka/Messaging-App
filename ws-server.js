@@ -4,8 +4,8 @@ const packetSys = require("./packet_handler/packetSys");
 const { Server } = require("ws");
 
 const wss = new Server({ port: 5757 });
-
-const connections = [];
+// ajax to primary server
+wss.connections = [];
 
 wss.on("connection", ws => {
     // (function () {
