@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const User = require("../../models/User");
+const { User } = require("../../models/index");
 const bcrypt = require("bcrypt");
 
 // create user route
@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
       res.status(400).json({ message: "Incorrect user-name" });
       return;
     }
-    const validatePassword = await bcrypt.compare(
+    const validatePassword = userData.checkPassword(
       req.body.password,
       userData.password
     );
