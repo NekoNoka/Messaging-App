@@ -22,7 +22,7 @@ const loginForm = async (e) => {
 const signupForm = async (e) => {
   e.preventDefault();
 
-  const username = document.getElementById("signup-username").value.trim();
+  const username = document.getElementById("username-signup").value.trim();
   const password = document.getElementById("signup-password").value.trim();
 
   if (username && password) {

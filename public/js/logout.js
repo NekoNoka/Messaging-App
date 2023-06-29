@@ -7,9 +7,9 @@ const logoutForm = async (e) => {
   });
 
   if (response.ok) {
-    document.location.replace("/");
+    document.location.replace("/login");
   } else {
-    alert("Error logging in");
+    alert("Error logging out");
   }
 };
 
