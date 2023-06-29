@@ -9,7 +9,6 @@ router.post("/", async (req, res) => {
       name: req.body.username,
       password: req.body.password,
     });
-
     req.session.save(() => {
       req.session.loggedIn = true;
 
@@ -28,25 +27,20 @@ router.post("/login", async (req, res) => {
         name: req.body.username,
       },
     });
-
     if (!userData) {
       res.status(400).json({ message: "Incorrect user-name" });
       return;
     }
-
     const validatePassword = await bcrypt.compare(
       req.body.password,
       userData.password
     );
-
     if (!validatePassword) {
       res.status(400).json("Incorrect password");
       return;
     }
-
     req.session.save(() => {
       req.session.loggedIn = true;
-
       res.json({ user: userData, message: "You successfully logged in" });
     });
   } catch (err) {
