@@ -7,34 +7,35 @@ const wss = new Server({ port: 5757 });
 
 const connections = [];
 
-wss.on("connection", ws => {
-    // (function () {
-    //     let oldWS = ws.send;
-    //     ws.send = function (...args) {
-    //         console.log(...args);
-    //         oldWS.bind(this)(...args);
-    //     }
-    // })();
-    let id = connections.push({
-        ws,
-        channel: "",
-        name: undefined,
-        bucket: new Array(5).fill(0)
-    });
-    ws.on("message", (packet) => {
-        try {
-            packet = JSON.parse(packet);
-            if (typeof packet.type === "string") packetSys.emit(packet.type, packet, id, connections);
-        } catch (error) {
-            console.log(error);
-        }
-    });
-    ws.on("close", (code, reason) => {
-        console.log({ code, reason });
-        eventSys.emit("user_left", id, connections);
-        connections[id - 1] = undefined;
-    });
-    eventSys.emit("user_connected", id, connections);
+wss.on("connection", (ws) => {
+  // (function () {
+  //     let oldWS = ws.send;
+  //     ws.send = function (...args) {
+  //         console.log(...args);
+  //         oldWS.bind(this)(...args);
+  //     }
+  // })();
+  let id = connections.push({
+    ws,
+    channel: "",
+    name: undefined,
+    bucket: new Array(5).fill(0),
+  });
+  ws.on("message", (packet) => {
+    try {
+      packet = JSON.parse(packet);
+      if (typeof packet.type === "string")
+        packetSys.emit(packet.type, packet, id, connections);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  ws.on("close", (code, reason) => {
+    console.log({ code, reason });
+    eventSys.emit("user_left", id, connections);
+    connections[id - 1] = undefined;
+  });
+  eventSys.emit("user_connected", id, connections);
 });
 
 module.exports = wss;
