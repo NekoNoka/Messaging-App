@@ -31,7 +31,7 @@ const eventSys = new EventEmitter();
   const sendPacket = async (event) => {
     const message = document.querySelector("#typed-message").value.trim();
     document.querySelector("#typed-message").value = "";
-    
+
     if (message) {
       console.log(message);
       eventSys.emit(
@@ -46,6 +46,7 @@ const eventSys = new EventEmitter();
     div.innerText = packet.data.message;
     messages.appendChild(div);
   });
+  document.querySelector("#typed-message")?.addEventListener("keydown", (e) => { e.key === "Enter" && sendPacket() });
   document.querySelector("#send-message")?.addEventListener("click", sendPacket);
 })());
 
