@@ -9,7 +9,7 @@ for (const event_type of event_types) {
         if (typeof callback !== "function") throw new Error();
         list.push([path.parse(event_type).name, callback]);
     } catch (error) {
-        let log_message = `The file ${path.join(__dirname, packet_type)} is not setup properly.`;
+        let log_message = `The file ${path.join(__dirname, event_type)} is not setup properly.`;
         log("bright red", log_message);
     }
 }

@@ -1,18 +1,22 @@
 const router = require("express").Router();
 const { User } = require("../../models/index");
-const bcrypt = require("bcrypt");
+const wss = require("../../ws-server");
+const s = require("../../utils/session");
 
 // create user route
 router.post("/", async (req, res) => {
   try {
     const userData = await User.create({
       name: req.body.username,
-      password: req.body.password,
+      password: req.body.password
     });
     req.session.save(() => {
       req.session.loggedIn = true;
-
-      res.status(200).json(userData);
+      req.session.sToken = s;
+      let token = Math.floor(Math.random() * 100000);
+      wss.tokens[token] = userData.toJSON();
+      req.session.token = token;
+      res.status(200).json(JSON.stringify(token));
     });
   } catch (err) {
     res.status(400).json(err);
@@ -24,8 +28,8 @@ router.post("/login", async (req, res) => {
   try {
     const userData = await User.findOne({
       where: {
-        name: req.body.username,
-      },
+        name: req.body.username
+      }
     });
     if (!userData) {
       res.status(400).json({ message: "Incorrect user-name" });
@@ -41,7 +45,12 @@ router.post("/login", async (req, res) => {
     }
     req.session.save(() => {
       req.session.loggedIn = true;
-      res.json({ user: userData, message: "You successfully logged in" });
+      req.session.sToken = s;
+      let token = Math.floor(Math.random() * 100000);
+      wss.tokens[token] = userData.toJSON();
+      req.session.token = token;
+      // res.json({ user: userData, message: "You successfully logged in" });
+      res.status(200).json(JSON.stringify(token));
     });
   } catch (err) {
     res.status(500).json(err);

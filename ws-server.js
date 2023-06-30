@@ -1,40 +1,37 @@
 const eventSys = require("./event_handler/eventSys");
 const packetSys = require("./packet_handler/packetSys");
+const sequelize = require("./config/connection.js");
+const models = require("./models/index");
 
 const { Server } = require("ws");
 
 const wss = new Server({ port: 5757 });
-// ajax to primary server
+
 wss.connections = [];
+wss.tokens = {};
 
 wss.on("connection", ws => {
-    // (function () {
-    //     let oldWS = ws.send;
-    //     ws.send = function (...args) {
-    //         console.log(...args);
-    //         oldWS.bind(this)(...args);
-    //     }
-    // })();
-    let id = connections.push({
+    let id = wss.connections.push({
         ws,
         channel: "",
         name: undefined,
+        verified: false,
         bucket: new Array(5).fill(0)
     });
     ws.on("message", (packet) => {
         try {
             packet = JSON.parse(packet);
-            if (typeof packet.type === "string") packetSys.emit(packet.type, packet, id, connections);
+            if (typeof packet.type === "string") packetSys.emit(packet.type, { packet, wss, id, models });
         } catch (error) {
             console.log(error);
         }
     });
     ws.on("close", (code, reason) => {
         console.log({ code, reason });
-        eventSys.emit("user_left", id, connections);
-        connections[id - 1] = undefined;
+        eventSys.emit("user_left", { id, wss });
+        wss.connections[id - 1] = undefined;
     });
-    eventSys.emit("user_connected", id, connections);
+    eventSys.emit("user_connected", { id, wss });
 });
 
 module.exports = wss;
