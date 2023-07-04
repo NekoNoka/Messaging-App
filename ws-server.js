@@ -17,11 +17,11 @@ wss.on("connection", ws => {
         name: undefined,
         verified: false,
         bucket: new Array(5).fill(0)
-    });
+    }) - 1;
     ws.on("message", (packet) => {
         try {
             packet = JSON.parse(packet);
-            if (typeof packet.type === "string") packetSys.emit(packet.type, { packet, wss, id, models });
+            if (typeof packet.type === "string") packetSys.emit(packet.type, { packet, wss, id, user: wss.clients[id], models });
         } catch (error) {
             console.log(error);
         }
@@ -29,7 +29,7 @@ wss.on("connection", ws => {
     ws.on("close", (code, reason) => {
         console.log({ code, reason });
         eventSys.emit("user_left", { id, wss });
-        wss.connections[id - 1] = undefined;
+        wss.connections[id] = undefined;
     });
     eventSys.emit("user_connected", { id, wss });
 });

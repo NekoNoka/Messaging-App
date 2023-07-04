@@ -1,5 +1,4 @@
-module.exports = function ({packet, id, wss: { connections } }) {
-    let user = connections[id - 1];
+module.exports = function ({packet, user, wss: { connections } }) {
     if (!user.verified) return false;
     let message = user.name + ": " + packet.data.message;
     console.log(message);
