@@ -157,3 +157,20 @@ const eventSys = new EventEmitter();
 
   document.getElementById("logout-btn")?.addEventListener("click", logoutForm);
 })();
+
+(function () {
+  if (location.pathname !== "/") return;
+  const addChannelForm = async (e) => {
+    const channelName = document.querySelector("#channel-name")?.value?.trim();
+    
+    e.preventDefault();
+    if (channelName) {
+      eventSys.emit("sendPacket", {
+        type: "create_channel",
+        data: { name: channelName }
+      });
+    }
+  };
+
+  document.querySelector("#addchannel-btn")?.addEventListener("click", addChannelForm);
+})();
