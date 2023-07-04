@@ -17,13 +17,13 @@ const sess = {
     maxAge: 5 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: false,
-    sameSite: "strict"
+    sameSite: "strict",
   },
   resave: true,
   saveUninitialized: true,
   store: new SequelizeStore({
-    db: sequelize
-  })
+    db: sequelize,
+  }),
 };
 
 app.use(session(sess));
@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(routes);
 
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
   });

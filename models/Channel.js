@@ -19,8 +19,8 @@ Channel.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    currently_inChannel: {
-      type: DataTypes.STRING,
+    channelid: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
