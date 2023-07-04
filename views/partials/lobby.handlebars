@@ -1,7 +1,17 @@
-<div class="base">
+{{! all public channels }}
+{{! chat }}
+{{! discover bar, channel template }}
+{{! sidebar to switch channels, create channels }}
+{{! button to close sidebar }}
+
+<div>
+  <button id="add-channel">Add Channel</button>
+</div>
+
+<div>
   <div>
     <p>{{name}}</p>
-    <h3>History of Messages</h3>
+    <h3>History of Messagesasdsadfgsdfgdfg</h3>
     <span id="messages"></span>
   </div>
   <div class="chat-bar">
@@ -12,8 +22,4 @@
   </div>
 
   <button id="logout-btn" type="click">Log out</button>
-</div>
-
-<div class="lobby hidden">
-  {{> lobby}}
 </div>

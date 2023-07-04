@@ -27,7 +27,7 @@ class EventEmitter {
 const eventSys = new EventEmitter();
 
 // html button handlers
-((function () {
+(function () {
   const sendPacket = async (event) => {
     const message = document.querySelector("#typed-message").value.trim();
     document.querySelector("#typed-message").value = "";
@@ -46,13 +46,18 @@ const eventSys = new EventEmitter();
     div.innerText = packet.data.message;
     messages.appendChild(div);
   });
-  document.querySelector("#typed-message")?.addEventListener("keydown", (e) => { e.key === "Enter" && sendPacket() });
-  document.querySelector("#send-message")?.addEventListener("click", sendPacket);
-})());
+  document.querySelector("#typed-message")?.addEventListener("keydown", (e) => {
+    e.key === "Enter" && sendPacket();
+  });
+  document
+    .querySelector("#send-message")
+    ?.addEventListener("click", sendPacket);
+})();
 
 // websocket
-((location.pathname == "/") && (function () {
-  const ws = new WebSocket("ws://71.84.64.236:5757");
+(function () {
+  if (location.pathname !== "/") return;
+  const ws = new WebSocket("ws://localhost:5757");
 
   ws.addEventListener("message", (message) => {
     let packet = JSON.parse(message.data);
@@ -81,9 +86,10 @@ const eventSys = new EventEmitter();
     console.log(packet);
     ws.send(packet);
   });
-})());
+})();
 
-((location.pathname == "/login") && (function () {
+(function () {
+  if (location.pathname !== "/login") return;
   const loginForm = async (e) => {
     e.preventDefault();
 
@@ -128,13 +134,15 @@ const eventSys = new EventEmitter();
 
   document.getElementById("login-form")?.addEventListener("submit", loginForm);
 
-  document.getElementById("signup-form")?.addEventListener("submit", signupForm);
-})());
+  document
+    .getElementById("signup-form")
+    ?.addEventListener("submit", signupForm);
+})();
 
-((location.pathname == "") && (function () {
+(function () {
+  if (location.pathname !== "/") return;
   const logoutForm = async (e) => {
     e.preventDefault();
-
     const response = await fetch("/api/users/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -148,4 +156,4 @@ const eventSys = new EventEmitter();
   };
 
   document.getElementById("logout-btn")?.addEventListener("click", logoutForm);
-})());
+})();

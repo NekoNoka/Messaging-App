@@ -54,3 +54,6 @@ main {
     background: cyan;
 }
 
+.hidden {
+    display: none;
+}

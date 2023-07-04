@@ -8,13 +8,15 @@ router.post("/", async (req, res) => {
   try {
     const userData = await User.create({
       name: req.body.username,
-      password: req.body.password
+      password: req.body.password,
     });
     req.session.save(() => {
+      const user = userData.toJSON();
+      req.session.name = user.name;
       req.session.loggedIn = true;
       req.session.sToken = s;
       let token = Math.floor(Math.random() * 100000);
-      wss.tokens[token] = userData.toJSON();
+      wss.tokens[token] = user;
       req.session.token = token;
       res.status(200).json(JSON.stringify(token));
     });
@@ -28,8 +30,8 @@ router.post("/login", async (req, res) => {
   try {
     const userData = await User.findOne({
       where: {
-        name: req.body.username
-      }
+        name: req.body.username,
+      },
     });
     if (!userData) {
       res.status(400).json({ message: "Incorrect user-name" });
@@ -44,10 +46,12 @@ router.post("/login", async (req, res) => {
       return;
     }
     req.session.save(() => {
+      const user = userData.toJSON();
+      req.session.name = user.name;
       req.session.loggedIn = true;
       req.session.sToken = s;
       let token = Math.floor(Math.random() * 100000);
-      wss.tokens[token] = userData.toJSON();
+      wss.tokens[token] = user;
       req.session.token = token;
       // res.json({ user: userData, message: "You successfully logged in" });
       res.status(200).json(JSON.stringify(token));
@@ -59,6 +63,7 @@ router.post("/login", async (req, res) => {
 
 // logout route
 router.post("/logout", (req, res) => {
+  console.log(req.body);
   if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(200).end();
