@@ -60,6 +60,7 @@ const eventSys = new EventEmitter();
 // websocket
 (function () {
   if (location.pathname !== "/") return;
+
   const ws = new WebSocket("ws://localhost:5757");
 
   ws.addEventListener("message", (message) => {
