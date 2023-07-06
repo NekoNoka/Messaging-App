@@ -13,7 +13,7 @@ Messages.init(
     },
     message: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     user_id: {
       type: DataTypes.INTEGER,
@@ -23,13 +23,13 @@ Messages.init(
         key: "id",
       },
     },
-    channelName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     channelId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      reference: {
+        model: "Channel",
+        key: "id",
+      },
     },
   },
   {

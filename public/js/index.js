@@ -19,8 +19,11 @@ class EventEmitter {
   }
   emit(eventName, ...args) {
     this.table[eventName]?.forEach((callBack) => callBack(...args));
-    let log_message = `emitted event ${eventName} using ${this.name}`;
+    let log_message = `finished emitting event ${eventName} using ${this.name}`;
     console.log(log_message);
+  }
+  delete(eventName) {
+    delete this.table[eventName];
   }
 }
 
@@ -41,9 +44,9 @@ const eventSys = new EventEmitter();
     }
   };
 
-  eventSys.on("message", (packet) => {
+  eventSys.on("message", (data) => {
     let div = document.createElement("div");
-    div.innerText = packet.data.message;
+    div.innerText = data.message;
     messages.appendChild(div);
   });
   document.querySelector("#typed-message")?.addEventListener("keydown", (e) => {
@@ -62,7 +65,7 @@ const eventSys = new EventEmitter();
   ws.addEventListener("message", (message) => {
     let packet = JSON.parse(message.data);
     console.log(packet);
-    eventSys.emit(packet.type, packet);
+    eventSys.emit(packet.type, packet.data);
   });
 
   ws.addEventListener("error", () => {
@@ -74,6 +77,7 @@ const eventSys = new EventEmitter();
     let token = JSON.parse(localStorage.getItem("token"));
     let packet = JSON.stringify({ type: "init", data: { token } });
     eventSys.emit("sendPacket", packet);
+    eventSys.emit("wsconnect");
     // document.location = "about:blank";
   });
 
@@ -165,15 +169,112 @@ const eventSys = new EventEmitter();
 
     e.preventDefault();
     if (channelName) {
-      const packet = JSON.stringify({
+      let packet = JSON.stringify({
         type: "create_channel",
         data: { name: channelName },
+      });
+      eventSys.on("create_channel_update", (data) => {
+        console.log(data.status, data.name);
+        eventSys.delete("create_channel_update");
       });
       eventSys.emit("sendPacket", packet);
     }
   };
-
   document
-    .querySelector("#addchannel-btn")
+    .querySelector("#submit-channel-btn")
     ?.addEventListener("click", addChannelForm);
 })();
+
+(function () {
+  if (location.pathname !== "/") return;
+
+  function viewHome() {
+    document.querySelector("#home").className = "";
+    document.querySelector("#lobby").className = "hidden";
+    document.querySelector("#add-channel").className = "hidden";
+  }
+
+  function viewSearch() {
+    document.querySelector("#home").className = "hidden";
+    document.querySelector("#lobby").className = "";
+    document.querySelector("#add-channel").className = "hidden";
+  }
+
+  function viewChannelForm() {
+    document.querySelector("#home").className = "hidden";
+    document.querySelector("#lobby").className = "hidden";
+    document.querySelector("#add-channel").className = "";
+  }
+
+  document.querySelector("#home-btn")?.addEventListener("click", viewHome);
+
+  document
+    .querySelector("#discover-btn")
+    ?.addEventListener("click", viewSearch);
+
+  document
+    .querySelector("#create-channel-btn")
+    ?.addEventListener("click", viewChannelForm);
+})();
+
+eventSys.on("wsconnect", () => {
+  console.log("something");
+
+  let packet = JSON.stringify({
+    type: "public_channels",
+  });
+
+  eventSys.on("public_channels", (data) => {
+    let table = document.createElement("div");
+
+    for (let item of data.channels) {
+      let divContainer = document.createElement("div");
+      let li = document.createElement("div");
+      let btn = document.createElement("button");
+      btn.innerHTML = `join: ${item.name}`;
+      btn.addEventListener("click", () => populateChannel(item.id));
+
+      li.textContent = item.name;
+
+      divContainer.appendChild(li);
+      divContainer.appendChild(btn);
+      table.appendChild(divContainer);
+    }
+    console.log(table);
+
+    document
+      .querySelector("#discover-channel")
+      .parentElement.appendChild(table);
+
+    eventSys.delete("public_channels");
+  });
+
+  eventSys.emit("sendPacket", packet);
+});
+
+function getChannel(id, callback) {
+  let packet = JSON.stringify({
+    type: "join_channel",
+    data: { id },
+  });
+  eventSys.on("join_channel", (data) => {
+    callback(data);
+    eventSys.delete("join_channel");
+  });
+  eventSys.emit("sendPacket", packet);
+}
+
+function populateChannel(id) {
+  getChannel(id, (data) => {
+    console.log(data);
+    let messagesEl = document.querySelector("#messages");
+    messagesEl.innerHTML = "";
+    for (let Message of data.Messages) {
+      let div = document.createElement("div");
+      div.innerText = Message.message;
+      messagesEl.appendChild(div);
+    }
+    document.querySelector("#home").className = "";
+    document.querySelector("#lobby").className = "hidden";
+  });
+}
