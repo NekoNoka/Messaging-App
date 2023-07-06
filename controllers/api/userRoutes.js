@@ -5,7 +5,6 @@ const s = require("../../utils/session");
 
 // create user route
 router.post("/", async (req, res) => {
-  try {
     const userData = await User.create({
       name: req.body.username,
       password: req.body.password,
@@ -20,14 +19,10 @@ router.post("/", async (req, res) => {
       req.session.token = token;
       res.status(200).json(JSON.stringify(token));
     });
-  } catch (err) {
-    res.status(400).json(err);
-  }
 });
 
 // login route
 router.post("/login", async (req, res) => {
-  try {
     const userData = await User.findOne({
       where: {
         name: req.body.username,
@@ -56,9 +51,6 @@ router.post("/login", async (req, res) => {
       // res.json({ user: userData, message: "You successfully logged in" });
       res.status(200).json(JSON.stringify(token));
     });
-  } catch (err) {
-    res.status(500).json(err);
-  }
 });
 
 // logout route

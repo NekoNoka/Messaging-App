@@ -30,7 +30,7 @@ User.init(
     },
     userid: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
   },
 
