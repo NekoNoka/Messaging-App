@@ -19,10 +19,6 @@ Channel.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    channelid: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
   },
   {
     sequelize,
