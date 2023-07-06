@@ -2,7 +2,7 @@
   <div>
     <p>Logged in as {{name}}</p>
     <h3>History of Messages</h3>
-    <span id="messages"></span>
+    <div id="messages"></div>
   </div>
   <div class="chat-bar">
     <div>
@@ -19,9 +19,14 @@
 <div class="hidden" id="add-channel">
   {{> add-channel }}
 </div>
-<div id="sidebar-background"></div>
-<div id="view-selector">
-  <button id="home-btn">Home</button>
-  <button id="discover-btn">Search</button>
-  <button id="create-channel-btn">+</button>
+<div class="hidden" id="about-us">
+  <h1>
+    About Us
+  </h1>
+  <div id="profileCardContainer">
+    {{#each groupMembers as |member|}}
+      {{> profile-card member}}
+    {{/each}}
+  </div>
+
 </div>

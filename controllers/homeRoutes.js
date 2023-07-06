@@ -21,48 +21,40 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.get('/aboutUs', (req, res) =>{
+router.get("/about-us", withAuth, async (req, res) => {
   try {
     const groupMembers = [
       {
-        name: 'Cecil',
-        email: 'clangba@yahoo.com',
-        github: '',
-        contribution: ''
-
+        name: "Cecil",
+        email: "clangba@yahoo.com",
+        github: "",
+        contribution: "",
       },
       {
-        name: 'Aden',
-        email: 'adeneldredrewards2@gmail.com',
-        github: '',
-        contribution: ''
-
+        name: "Aden",
+        email: "adeneldredrewards2@gmail.com",
+        github: "",
+        contribution: "",
       },
       {
-        name: 'Mark',
-        email: 'william.marks87@gmail.com',
-        github: '',
-        contribution: ''
-
+        name: "William",
+        email: "william.marks87@gmail.com",
+        github: "",
+        contribution: "",
       },
       {
-        name: 'Lilia',
-        email: 'hdez.lilia56@gmail.com',
-        github: '',
-        contribution: ''
-
+        name: "Lilia",
+        email: "hdez.lilia56@gmail.com",
+        github: "",
+        contribution: "",
       },
-      
-    ]
-    res.render("aboutUs", {
-      groupMembers
+    ];
+    res.render("about-us", {
+      groupMembers,
     });
-
   } catch (err) {
     res.status(500).json(err);
   }
-}
-)
-
+});
 
 module.exports = router;
