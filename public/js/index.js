@@ -98,8 +98,8 @@ const eventSys = new EventEmitter();
   const loginForm = async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("login-username")?.value?.trim();
-    const password = document.getElementById("login-password")?.value?.trim();
+    const username = document.querySelector("#login-username")?.value?.trim();
+    const password = document.querySelector("#login-password")?.value?.trim();
 
     if (username && password) {
       const response = await fetch("/api/users/login", {
