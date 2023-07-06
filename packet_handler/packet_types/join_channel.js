@@ -1,6 +1,6 @@
-module.exports = function ({ id, packet, wss: { connections } }) {
+module.exports = function ({ user, id, packet, wss: { connections } }) {
     let message = "";
-    let name = connections[id - 1].name;
+    let name = user.name;
     if (!name) {
         message = id + ": " + packet.data.message;
     } else {

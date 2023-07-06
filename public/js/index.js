@@ -57,6 +57,7 @@ const eventSys = new EventEmitter();
 // websocket
 (function () {
   if (location.pathname !== "/") return;
+
   const ws = new WebSocket("ws://localhost:5757");
 
   ws.addEventListener("message", (message) => {
@@ -162,15 +163,18 @@ const eventSys = new EventEmitter();
   if (location.pathname !== "/") return;
   const addChannelForm = async (e) => {
     const channelName = document.querySelector("#channel-name")?.value?.trim();
-    
+
     e.preventDefault();
     if (channelName) {
-      eventSys.emit("sendPacket", {
+      const packet = JSON.stringify({
         type: "create_channel",
-        data: { name: channelName }
+        data: { name: channelName },
       });
+      eventSys.emit("sendPacket", packet);
     }
   };
 
-  document.querySelector("#addchannel-btn")?.addEventListener("click", addChannelForm);
+  document
+    .querySelector("#addchannel-btn")
+    ?.addEventListener("click", addChannelForm);
 })();

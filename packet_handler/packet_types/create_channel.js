@@ -1,8 +1,7 @@
 module.exports = async function ({
-  id,
+  user,
   packet,
   models: { Channel },
-  wss: { connections },
 }) {
   try {
     const channelData = await Channel.create({
@@ -10,7 +9,7 @@ module.exports = async function ({
     });
     const channeljsonData = channelData.toJSON();
     if (channeljsonData.channel_name == undefined) {
-      connections[id - 1].ws.send(
+      user.ws.send(
         JSON.stringify({
           type: "error",
           data: { message: "Error creating channel" },
@@ -18,15 +17,12 @@ module.exports = async function ({
       );
       return;
     }
-    connections.forEach((user) => {
-      if (user)
-        user.ws.send(
-          JSON.stringify({
-            type: "create_channel",
-            data: { channel_id: channeljsonData.id },
-          })
-        );
-    });
+    user.ws.send(
+      JSON.stringify({
+        type: "create_channel",
+        data: { channel_id: channeljsonData.id },
+      })
+    );
   } catch (err) {
     console.log(err);
   }

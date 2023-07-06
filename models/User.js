@@ -28,7 +28,12 @@ User.init(
         len: [6],
       },
     },
+    userid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
+
   {
     hooks: {
       beforeCreate: async (newUserData) => {
