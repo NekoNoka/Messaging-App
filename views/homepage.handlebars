@@ -1,6 +1,6 @@
-<div class="base">
+<div class="hidden" id="home" >
   <div>
-    <p>{{name}}</p>
+    <p>Logged in as {{name}}</p>
     <h3>History of Messages</h3>
     <span id="messages"></span>
   </div>
@@ -10,11 +10,18 @@
       <button id="send-message">Send Message</button>
     </div>
   </div>
-
   <button id="logout-btn" type="click">Log out</button>
 </div>
 
-<div class="lobby">
+<div id="lobby">
   {{> lobby}}
+</div>
+<div class="hidden" id="add-channel">
   {{> add-channel }}
+</div>
+<div id="sidebar-background"></div>
+<div id="view-selector">
+  <button id="home-btn">Home</button>
+  <button id="discover-btn">Search</button>
+  <button id="create-channel-btn">+</button>
 </div>

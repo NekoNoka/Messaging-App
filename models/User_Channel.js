@@ -11,7 +11,7 @@ User_Channel.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    userid: {
+    User_userid: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -19,7 +19,7 @@ User_Channel.init(
         key: "id",
       },
     },
-    channelid: {
+    Channel_channelid: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {

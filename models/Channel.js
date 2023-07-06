@@ -11,11 +11,7 @@ Channel.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    messages: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    channel_name: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
