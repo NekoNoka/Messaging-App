@@ -1,46 +1,8 @@
-const eventSys = require("./event_handler/eventSys");
-const packetSys = require("./packet_handler/packetSys");
-const sequelize = require("./config/connection.js");
-const models = require("./models/index");
-
-const { Server } = require("ws");
-
-const wss = new Server({ port: process.env.PORT });
-
-wss.connections = [];
-wss.tokens = {};
-
-wss.on("connection", (ws) => {
-  let id =
-    wss.connections.push({
-      ws,
-      channel: "",
-      name: undefined,
-      verified: false,
-      bucket: new Array(5).fill(0),
-    }) - 1;
-  ws.on("message", (packet) => {
-    try {
-      packet = JSON.parse(packet);
-      if (typeof packet.type === "string")
-        packetSys.emit(packet.type, {
-          packet,
-          wss,
-          id,
-          user: wss.connections[id],
-          models,
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  });
-  ws.on("close", (code, reason) => {
-    console.log({ code, reason });
-    eventSys.emit("user_left", { id, wss });
-    wss.connections[id] = undefined;
-  });
-  eventSys.emit("user_connected", { id, wss });
-});
+const wss = {
+  Server: undefined,
+  connections: [],
+  tokens: {}
+};
 
 module.exports = wss;
 
