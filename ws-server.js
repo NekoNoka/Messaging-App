@@ -5,7 +5,7 @@ const models = require("./models/index");
 
 const { Server } = require("ws");
 
-const wss = new Server({ port: 5757 });
+const wss = new Server({ port: process.env.PORT });
 
 wss.connections = [];
 wss.tokens = {};
