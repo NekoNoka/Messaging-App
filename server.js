@@ -75,7 +75,6 @@ wsServer.on('connection', function (ws, req) {
     }
   });
   eventSys.emit("user_connected", { id, wss });
-  console.log('socket', req.testing);
 });
 
 sequelize.sync({ force: false }).then(() => {

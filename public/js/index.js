@@ -61,7 +61,7 @@ const eventSys = new EventEmitter();
 (function () {
   if (location.pathname !== "/") return;
 
-  const ws = new WebSocket("wss://" + location.hostname + ":3001");
+  const ws = new WebSocket("ws://" + location.hostname + ":3001");
 
   ws.addEventListener("message", (message) => {
     let packet = JSON.parse(message.data);
@@ -174,9 +174,14 @@ const eventSys = new EventEmitter();
         type: "create_channel",
         data: { name: channelName },
       });
-      eventSys.on("create_channel_update", (data) => {
-        console.log(data.status, data.name);
-        eventSys.delete("create_channel_update");
+      eventSys.on("create_channel", (data) => {
+        console.log(data.id, data.name);
+        populateChannel(data.id)
+        selectNav(
+          document.querySelector("#home"),
+          document.querySelector("#home-btn")
+        );
+        eventSys.delete("create_channel");
       });
       eventSys.emit("sendPacket", packet);
     }
@@ -267,6 +272,11 @@ function populateChannel(id) {
       div.innerText = Message.message;
       messagesEl.appendChild(div);
     }
+    console.log(data);
+    selectNav(
+      document.querySelector("#home"),
+      document.querySelector("#home-btn")
+    );
   });
 }
 
@@ -290,16 +300,16 @@ function populateChannelInfo() {
       let btn = document.createElement("button");
       btn.innerHTML = `join: ${item.name}`;
       btn.addEventListener("click", () => populateChannel(item.id));
-      selectNav(
-        document.querySelector("#lobby"),
-        document.querySelector("#discover-btn")
-      );
       li.textContent = item.name;
 
       divContainer.appendChild(li);
       divContainer.appendChild(btn);
       table.appendChild(divContainer);
     }
+    selectNav(
+      document.querySelector("#lobby"),
+      document.querySelector("#discover-btn")
+    );
     document.querySelector("#channel-list").innerHTML = "";
     document.querySelector("#channel-list").appendChild(table);
 

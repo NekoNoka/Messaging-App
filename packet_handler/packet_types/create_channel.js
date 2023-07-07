@@ -14,13 +14,14 @@ module.exports = async function ({
       Channel_channelid: channelData.id,
       User_userid: user.id,
     });
-
+    user_channel = user_channel.toJSON();
+    console.log(channelData);
     user.ws.send(
       JSON.stringify({
-        type: "create_channel_update",
+        type: "create_channel",
         data: {
-          status: channelData.channel_name,
-          name: channelData.channel_name,
+          name: user_channel.name,
+          id: user_channel.id
         },
       })
     );
