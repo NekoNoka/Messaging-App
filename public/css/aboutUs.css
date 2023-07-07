@@ -1,13 +1,11 @@
 #profileCardContainer {
-    display:flex;
+    display: flex;
     justify-content: center;
     flex-wrap: wrap;
-   
-   }
-   
-   .profileCard {
-   border: solid 1px black;
-   margin: 20px;
-   padding: 12px;
-   
-   }
+}
+
+.profileCard {
+    border: solid 1px black;
+    margin: 20px;
+    padding: 12px;
+}

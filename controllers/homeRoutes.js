@@ -5,24 +5,6 @@ const s = require("../utils/session");
 
 router.get("/", withAuth, async (req, res) => {
   try {
-    res.render("homepage", {
-      name: req.session.name,
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-router.get("/login", (req, res) => {
-  if (req.session.loggedIn) {
-    res.redirect("/");
-    return;
-  }
-  res.render("login");
-});
-
-router.get("/about-us", withAuth, async (req, res) => {
-  try {
     const groupMembers = [
       {
         name: "Cecil",
@@ -49,12 +31,21 @@ router.get("/about-us", withAuth, async (req, res) => {
         contribution: "",
       },
     ];
-    res.render("about-us", {
-      groupMembers,
+    res.render("homepage", {
+      name: req.session.name,
+      groupMembers
     });
   } catch (err) {
     res.status(500).json(err);
   }
+});
+
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
+  }
+  res.render("login");
 });
 
 module.exports = router;

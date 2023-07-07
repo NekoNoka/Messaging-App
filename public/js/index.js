@@ -163,26 +163,6 @@ const eventSys = new EventEmitter();
   document.getElementById("logout-btn")?.addEventListener("click", logoutForm);
 })();
 
-// (function () {
-//   if (location.pathname !== "/about-us") return;
-//   const aboutUs = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await fetch("/about-us", {
-//         method: "GET",
-//         headers: { "Content-Type": "application/json" },
-//       });
-
-//       if (response.ok) {
-//         document.location.replace("/");
-//       }
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-//   document.getElementById("about-us")?.addEventListener("click", aboutUs);
-// })();
-
 (function () {
   if (location.pathname !== "/") return;
   const addChannelForm = async (e) => {
@@ -206,68 +186,53 @@ const eventSys = new EventEmitter();
     ?.addEventListener("click", addChannelForm);
 })();
 
+function selectNav(div, el) {
+  document.querySelector("#home").className = "hidden";
+  document.querySelector("#lobby").className = "hidden";
+  document.querySelector("#add-channel").className = "hidden";
+  document.querySelector("#about").className = "hidden";
+
+  document.querySelector("#home-btn").classList.remove("active");
+  document.querySelector("#discover-btn").classList.remove("active");
+  document.querySelector("#create-channel-btn").classList.remove("active");
+  document.querySelector("#about-us").classList.remove("active");
+
+  document.querySelector("#home-btn").classList.remove("disabled");
+  document.querySelector("#discover-btn").classList.remove("disabled");
+  document.querySelector("#create-channel-btn").classList.remove("disabled");
+  document.querySelector("#about-us").classList.remove("disabled");
+
+  div.className = "";
+  el?.classList?.add("active");
+  el?.classList?.add("disabled");
+}
+
 (function () {
   if (location.pathname !== "/") return;
 
   function viewHome() {
-    document.querySelector("#home").className = "";
-    document.querySelector("#lobby").className = "hidden";
-    document.querySelector("#add-channel").className = "hidden";
-    document.querySelector("#about").className = "hidden";
-    document.querySelector("#home-btn").classList.add("active");
-    document.querySelector("#discover-btn").classList.remove("active");
-    document.querySelector("#create-channel-btn").classList.remove("active");
-    document.querySelector("#about-us").classList.remove("active");
-    document.querySelector("#home-btn").classList.add("disabled");
-    document.querySelector("#discover-btn").classList.remove("disabled");
-    document.querySelector("#create-channel-btn").classList.remove("disabled");
-    document.querySelector("#about-us").classList.remove("disabled");
+    selectNav(
+      document.querySelector("#home"),
+      document.querySelector("#home-btn")
+    );
   }
 
   function viewSearch() {
     populateChannelInfo();
-    document.querySelector("#home").className = "hidden";
-    document.querySelector("#lobby").className = "";
-    document.querySelector("#add-channel").className = "hidden";
-    document.querySelector("#about").className = "hidden";
-    document.querySelector("#home-btn").classList.remove("active");
-    document.querySelector("#discover-btn").classList.add("active");
-    document.querySelector("#create-channel-btn").classList.remove("active");
-    document.querySelector("#about-us").classList.remove("active");
-    document.querySelector("#home-btn").classList.remove("disabled");
-    document.querySelector("#discover-btn").classList.add("disabled");
-    document.querySelector("#create-channel-btn").classList.remove("disabled");
-    document.querySelector("#about-us").classList.remove("disabled");
   }
 
   function viewChannelForm() {
-    document.querySelector("#home").className = "hidden";
-    document.querySelector("#lobby").className = "hidden";
-    document.querySelector("#add-channel").className = "";
-    document.querySelector("#about").className = "hidden";
-    document.querySelector("#home-btn").classList.remove("active");
-    document.querySelector("#discover-btn").classList.remove("active");
-    document.querySelector("#create-channel-btn").classList.add("active");
-    document.querySelector("#about-us").classList.remove("active");
-    document.querySelector("#home-btn").classList.remove("disabled");
-    document.querySelector("#discover-btn").classList.remove("disabled");
-    document.querySelector("#create-channel-btn").classList.add("disabled");
-    document.querySelector("#about-us").classList.remove("disabled");
+    selectNav(
+      document.querySelector("#add-channel"),
+      document.querySelector("#create-channel-btn")
+    );
   }
 
   function aboutUs() {
-    document.querySelector("#home").className = "hidden";
-    document.querySelector("#lobby").className = "hidden";
-    document.querySelector("#add-channel").className = "hidden";
-    document.querySelector("#about").className = "";
-    document.querySelector("#home-btn").classList.remove("active");
-    document.querySelector("#discover-btn").classList.remove("active");
-    document.querySelector("#create-channel-btn").classList.remove("active");
-    document.querySelector("#about-us").classList.add("active");
-    document.querySelector("#home-btn").classList.remove("disabled");
-    document.querySelector("#discover-btn").classList.remove("disabled");
-    document.querySelector("#create-channel-btn").classList.remove("disabled");
-    document.querySelector("#about-us").classList.add("disabled");
+    selectNav(
+      document.querySelector("#about"),
+      document.querySelector("#about-us")
+    );
   }
 
   document.getElementById("about-us")?.addEventListener("click", aboutUs);
@@ -302,15 +267,6 @@ function populateChannel(id) {
       div.innerText = Message.message;
       messagesEl.appendChild(div);
     }
-    document.querySelector("#home").className = "";
-    document.querySelector("#lobby").className = "hidden";
-    document.querySelector("#add-channel").className = "hidden";
-    document.querySelector("#home-btn").classList.add("active");
-    document.querySelector("#discover-btn").classList.remove("active");
-    document.querySelector("#create-channel-btn").classList.remove("active");
-    document.querySelector("#home-btn").classList.add("disabled");
-    document.querySelector("#discover-btn").classList.remove("disabled");
-    document.querySelector("#create-channel-btn").classList.remove("disabled");
   });
 }
 
@@ -334,7 +290,10 @@ function populateChannelInfo() {
       let btn = document.createElement("button");
       btn.innerHTML = `join: ${item.name}`;
       btn.addEventListener("click", () => populateChannel(item.id));
-
+      selectNav(
+        document.querySelector("#lobby"),
+        document.querySelector("#discover-btn")
+      );
       li.textContent = item.name;
 
       divContainer.appendChild(li);

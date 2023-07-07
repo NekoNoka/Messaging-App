@@ -1,4 +1,4 @@
-<div class="hidden" id="home" >
+<div class="hidden" id="home">
   <div>
     <p>Logged in as {{name}}</p>
     <h3>History of Messages</h3>
@@ -16,16 +16,18 @@
 <div id="lobby">
   {{> lobby}}
 </div>
+
 <div class="hidden" id="add-channel">
   {{> add-channel }}
 </div>
-<div class="hidden" id="about-us">
-  <h1>
-    About Us
-  </h1>
-  <div class="hidden" id="about">
-    {{#each groupMembers as |member|}}
-      {{> profile-card member}}
-    {{/each}}
-  </div>
+
+<div class="hidden" id="about">
+  {{#each groupMembers as |member|}}
+    <section class="card">
+      <div>{{member.name}}</div>
+      <div>{{member.email}}</div>
+      <div>{{member.github}}</div>
+      <div>{{member.contribution}}</div>
+    </section>
+  {{/each}}
 </div>
