@@ -10,25 +10,25 @@ router.get("/", withAuth, async (req, res) => {
         name: "Cecil",
         email: "clangba@yahoo.com",
         github: "",
-        contribution: "",
+        contribution: "Front End: Handlebars CSS",
       },
       {
         name: "Aden",
         email: "adeneldredrewards2@gmail.com",
         github: "",
-        contribution: "",
+        contribution: "Back End: Web Socket",
       },
       {
         name: "William",
         email: "william.marks87@gmail.com",
         github: "",
-        contribution: "",
+        contribution: "Back End: Routes",
       },
       {
         name: "Lilia",
         email: "hdez.lilia56@gmail.com",
         github: "",
-        contribution: "",
+        contribution: "Front End: Handlebars CSS",
       },
     ];
     res.render("homepage", {

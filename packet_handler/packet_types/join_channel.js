@@ -11,5 +11,5 @@ module.exports = async function ({
   let data = channelData.toJSON();
   user.currentChannel = data.id;
   console.log(data);
-  user.ws.send(JSON.stringify({ type: "join_channel", data }));
+  user.ws.emit("message", JSON.stringify({ type: "join_channel", data }));
 };

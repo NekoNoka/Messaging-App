@@ -7,5 +7,5 @@ module.exports = async function ({
 }) {
   let channels = await Channel.findAll();
   channels = channels.map((e) => e.toJSON());
-  user.ws.send(JSON.stringify({ type: "public_channels", data: { channels } }));
+  user.ws.emit("message", JSON.stringify({ type: "public_channels", data: { channels } }));
 };

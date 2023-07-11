@@ -15,7 +15,7 @@ module.exports = function ({
   let currentChannel = user.currentChannel;
   connections.forEach((user) => {
     if (user && user.currentChannel == currentChannel)
-      user.ws.send(JSON.stringify({ type: "message", data: { message } }));
+      user.ws.emit("message", JSON.stringify({ type: "message", data: { message } }));
   });
   return true;
 };

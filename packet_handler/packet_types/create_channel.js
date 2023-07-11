@@ -16,7 +16,7 @@ module.exports = async function ({
     });
     user_channel = user_channel.toJSON();
     console.log(channelData);
-    user.ws.send(
+    user.ws.emit("message", 
       JSON.stringify({
         type: "create_channel",
         data: {

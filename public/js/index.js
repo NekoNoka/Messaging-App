@@ -18,6 +18,7 @@ class EventEmitter {
     console.log(log_message);
   }
   emit(eventName, ...args) {
+    if (eventName == undefined) return console.error("DONT EMIT UNDEFINED", args);
     this.table[eventName]?.forEach((callBack) => callBack(...args));
     let log_message = `finished emitting event ${eventName} using ${this.name}`;
     console.log(log_message);
@@ -61,19 +62,19 @@ const eventSys = new EventEmitter();
 (function () {
   if (location.pathname !== "/") return;
 
-  const ws = new WebSocket("ws://" + location.hostname + ":3001");
+  const ws = io();
+  // const ws = new socket("ws://" + location.hostname + ":3001");
 
-  ws.addEventListener("message", (message) => {
-    let packet = JSON.parse(message.data);
-    console.log(packet);
+  ws.on("message", (message) => {
+    let packet = JSON.parse(message);
     eventSys.emit(packet.type, packet.data);
   });
 
-  ws.addEventListener("error", () => {
+  ws.on("error", () => {
     // document.location = "about:blank";
   });
 
-  ws.addEventListener("open", () => {
+  ws.on("connect", () => {
     console.log("Connection Opened");
     let token = JSON.parse(localStorage.getItem("token"));
     let packet = JSON.stringify({ type: "init", data: { token } });
@@ -82,14 +83,14 @@ const eventSys = new EventEmitter();
     // document.location = "about:blank";
   });
 
-  ws.addEventListener("close", () => {
+  ws.on("close", () => {
     console.log("Connection Closed");
     // document.location = "about:blank";
   });
 
   eventSys.on("sendPacket", (packet) => {
     console.log(packet);
-    ws.send(packet);
+    ws.emit("message", packet);
   });
 })();
 
@@ -208,8 +209,8 @@ function selectNav(div, el) {
   document.querySelector("#about-us").classList.remove("disabled");
 
   div.className = "";
-  el?.classList?.add("active");
-  el?.classList?.add("disabled");
+  el.classList.add("active");
+  el.classList.add("disabled");
 }
 
 (function () {

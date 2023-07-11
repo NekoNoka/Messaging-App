@@ -9,9 +9,14 @@ const wss = require("./ws-server");
 const eventSys = require("./event_handler/eventSys");
 const packetSys = require("./packet_handler/packetSys");
 const models = require("./models/index");
-const ws = require("ws");
+// const ws = require("ws");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {});
+
 // const expressWs = require('express-ws')(app);
 const PORT = process.env.PORT || 3001;
 
@@ -44,8 +49,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(routes);
 
-const wsServer = new ws.Server({ noServer: true });
-wsServer.on('connection', function (ws, req) {
+io.on('connection', function (ws) {
   let id =
     wss.connections.push({
       ws,
@@ -78,11 +82,7 @@ wsServer.on('connection', function (ws, req) {
 });
 
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
-  }).on("upgrade", (request, socket, head) => {
-    wsServer.handleUpgrade(request, socket, head, socket => {
-      wsServer.emit('connection', socket, request);
-    });
   });
 });
